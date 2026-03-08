@@ -14,8 +14,12 @@ export default function TabLayout() {
   return (
     <NativeTabs iconColor={tint} blurEffect="regular">
       <NativeTabs.Trigger name="index" hidden />
-      <NativeTabs.Trigger name="events">
+      <NativeTabs.Trigger name="map">
         <Icon sf={{ default: "map", selected: "map.fill" }} />
+        <Label>Map</Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="events">
+        <Icon sf={{ default: "list.bullet", selected: "list.bullet" }} />
         <Label>Events</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="search">
