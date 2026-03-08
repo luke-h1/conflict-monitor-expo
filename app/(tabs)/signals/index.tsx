@@ -1,4 +1,4 @@
-import { LegendList } from "@legendapp/list";
+import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { Pressable, RefreshControl, StyleSheet } from "react-native";
@@ -9,6 +9,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { fetchSignals } from "@/lib/api";
 import { getErrorMessage } from "@/lib/error";
+import type { MonitorSignal } from "@/types/signals";
 
 export default function SignalsScreen() {
   const {
@@ -26,11 +27,13 @@ export default function SignalsScreen() {
   const errorMessage = getErrorMessage(error);
 
   const renderItem = useCallback(
-    ({ item, index }: { item: (typeof signals)[number]; index: number }) => (
+    ({ item, index }: { item: MonitorSignal; index: number }) => (
       <SignalRow signal={item} index={index} />
     ),
     [],
   );
+
+  const keyExtractor = useCallback((item: MonitorSignal) => item.id, []);
 
   if (loading) {
     return <LoadingView message="Loading signals…" />;
@@ -62,16 +65,15 @@ export default function SignalsScreen() {
   }
 
   return (
-    <LegendList
+    <FlashList
       data={signals}
-      keyExtractor={(item) => item.id}
       renderItem={renderItem}
+      keyExtractor={keyExtractor}
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={styles.listContent}
       refreshControl={
         <RefreshControl refreshing={isRefetching} onRefresh={() => refetch()} />
       }
-      recycleItems
     />
   );
 }

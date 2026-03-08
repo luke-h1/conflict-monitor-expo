@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
+import { memo } from "react";
 import { Platform, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
-  FadeInDown,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -13,7 +13,7 @@ import type { MonitorSignal } from "@/types/signals";
 
 const SPRING_CONFIG = { damping: 18, stiffness: 400 };
 
-export function SignalRow({
+function SignalRowInner({
   signal,
   index = 0,
 }: {
@@ -30,11 +30,7 @@ export function SignalRow({
   }));
 
   return (
-    <Animated.View
-      entering={FadeInDown.duration(400)
-        .delay(index * 45)
-        .springify()}
-    >
+    <Animated.View>
       <Link
         href={{ pathname: "/signal/[id]", params: { id: signal.id } }}
         asChild
@@ -81,6 +77,8 @@ export function SignalRow({
     </Animated.View>
   );
 }
+
+export const SignalRow = memo(SignalRowInner);
 
 const styles = StyleSheet.create({
   row: {

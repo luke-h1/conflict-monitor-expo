@@ -1,4 +1,4 @@
-import { LegendList } from "@legendapp/list";
+import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { Pressable, RefreshControl, StyleSheet } from "react-native";
@@ -9,6 +9,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { fetchEvents } from "@/lib/api";
 import { getErrorMessage } from "@/lib/error";
+import type { MonitorEvent } from "@/types/events";
 
 export default function EventsScreen() {
   const {
@@ -26,11 +27,13 @@ export default function EventsScreen() {
   const errorMessage = getErrorMessage(error);
 
   const renderItem = useCallback(
-    ({ item, index }: { item: (typeof events)[number]; index: number }) => (
+    ({ item, index }: { item: MonitorEvent; index: number }) => (
       <EventRow event={item} index={index} />
     ),
     [],
   );
+
+  const keyExtractor = useCallback((item: MonitorEvent) => item.id, []);
 
   if (loading) {
     return <LoadingView message="Loading events…" />;
@@ -50,16 +53,15 @@ export default function EventsScreen() {
   }
 
   return (
-    <LegendList
+    <FlashList
       data={events}
-      keyExtractor={(item) => item.id}
       renderItem={renderItem}
+      keyExtractor={keyExtractor}
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={styles.listContent}
       refreshControl={
         <RefreshControl refreshing={isRefetching} onRefresh={() => refetch()} />
       }
-      recycleItems
     />
   );
 }

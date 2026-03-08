@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
+import { memo } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
-  FadeInDown,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -40,7 +40,7 @@ function SeverityPill({ severity }: { severity: number }) {
   );
 }
 
-export function EventRow({
+function EventRowInner({
   event,
   index = 0,
 }: {
@@ -57,11 +57,7 @@ export function EventRow({
   }));
 
   return (
-    <Animated.View
-      entering={FadeInDown.duration(400)
-        .delay(index * 45)
-        .springify()}
-    >
+    <Animated.View>
       <Link
         href={{
           pathname: "/event/[slug]",
@@ -113,6 +109,8 @@ export function EventRow({
     </Animated.View>
   );
 }
+
+export const EventRow = memo(EventRowInner);
 
 const styles = StyleSheet.create({
   row: {
