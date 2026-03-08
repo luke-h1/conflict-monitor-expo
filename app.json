@@ -14,12 +14,16 @@
       "bundleIdentifier": "com.lhowsam.conflictmonitor",
       "buildNumber": "1",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
       "package": "com.lhowsam.conflictmonitor",
       "versionCode": 1,
+      "permissions": ["android.permission.INTERNET"],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
